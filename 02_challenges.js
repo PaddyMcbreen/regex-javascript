@@ -1,14 +1,19 @@
 const { check, runTest, skipTest } = require("./test-api/index.js");
 
-/*
-extractCode()
 
+function extractCode(string) {
+  const match = string.match(/\d+/g);
+  return match ? parseInt(match[0], 10) : null;
+}
+
+
+/*
 This function should take a string as an argument
 Somwhere in the middle of the string, there will be a series of consecutive digits composing a number
 You should extract that number from the string and return it
 */
 
-skipTest(
+runTest(
   "extractCode() can find the number in a single word string",
   function () {
     check(extractCode("abcd67yuio")).isEqualTo(67);
@@ -18,15 +23,13 @@ skipTest(
   }
 );
 
-/*
-isValidSortCode()
 
-This function should take a string representing a sort code as an argument
-A valid sort code should adhere to the format: 2 digits hyphen 2 digits hyphen 2 digits
-You should return true if the sort code is valid, and false otherwise
-*/
+function isValidSortCode(sortCode){
+  return /^\d{2}-\d{2}-\d{2}$/.test(sortCode)
+}
 
-skipTest(
+
+runTest(
   "isValidSortCode() should check is a sort code string is in the correct format",
   function () {
     check(isValidSortCode("10-34-67")).isEqualTo(true);
@@ -41,6 +44,12 @@ skipTest(
   }
 );
 
+
+function isProfessionalEmail(email) {
+  const regex = /[xX]$/;
+  return !regex.test(email);
+}
+
 /*
 isProfessionalEmail()
 
@@ -49,7 +58,7 @@ An email is considered to be professional if it does not end with a kiss ("x" or
 You should return true if the email is professional, and false otherwise
 */
 
-skipTest(
+runTest(
   "isProfessionalEmail() checks if an email ends with an x",
   function () {
     check(isProfessionalEmail("x")).isEqualTo(false);
@@ -60,13 +69,24 @@ skipTest(
   }
 );
 
+
+function countVowels(vowels) {
+  let count = 0;
+  const vowelRegex = /[aeiouAEIOU]/g;
+  const vowelMatches = vowels.match(vowelRegex);
+
+  if (vowelMatches) {
+    count = vowelMatches.length
+  }
+  return count
+}
 /*
 countVowels()
 
 This function should take a string as an argument, and return a count representing the number of vowels it contains
 */
 
-skipTest("countVowels() counts the vowels in a string", function () {
+runTest("countVowels() counts the vowels in a string", function () {
   check(countVowels("")).isEqualTo(0);
   check(countVowels("bcd")).isEqualTo(0);
   check(countVowels("a")).isEqualTo(1);
@@ -74,6 +94,21 @@ skipTest("countVowels() counts the vowels in a string", function () {
   check(countVowels("AEbiO")).isEqualTo(4);
   check(countVowels("aaeee!!!")).isEqualTo(5);
 });
+
+
+function sumNums(string2){
+  if (string2.match(/\d/g) === null){
+    return 0
+  }
+  else {
+    let sum = 0
+    const numbers = string2.match(/\d+/g)
+    for (i = 0; i < numbers.length; i++){
+      sum += Number(numbers[i])
+    }
+    return sum
+    }
+}
 
 /*
 sumNums()
@@ -83,13 +118,22 @@ Consecutive digits should be taken as numbers: i.e. "24" = 24, not 6
 If there are no numbers, you should return 0
 */
 
-skipTest("sumNums() totals all of the numbers in a string", function () {
+runTest("sumNums() totals all of the numbers in a string", function () {
   check(sumNums("hello")).isEqualTo(0);
   check(sumNums("1")).isEqualTo(1);
   check(sumNums("12")).isEqualTo(12);
   check(sumNums("1hello2")).isEqualTo(3);
   check(sumNums("12hiya!3")).isEqualTo(15);
 });
+
+function testValidCountdown(string) {
+ 
+  if (string.length === 9 && string.match(/[aeiou]{3,}[^aeiou]{4,}/gi)) {
+    return true;
+  } else {
+    return false;
+  }
+}
 
 /*
 testValidCountdown()
@@ -100,7 +144,7 @@ collection of letters for the TV show countdown.
 In countdown a valid collection contains at least 4 consonants and 3 vowels and has exactly 9 letters
 */
 
-skipTest(
+runTest(
   "testValidCountdown() Returns true if the string contains at least 4 consonants and 3 vowels and has exactly 9 letters, false otherwise",
   function () {
     check(testValidCountdown("aaabbbccc")).isEqualTo(true);
